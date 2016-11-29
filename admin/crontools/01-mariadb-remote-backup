@@ -1,0 +1,5 @@
+#!/bin/sh
+SOURCE=/home/mariadb/backup/
+DEST=/home/mariadb/backup-from-origames-server-3
+
+rsync -razh --delete $SOURCE root@origames-server-2:$DEST

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+BACKUP_LOG_DIR=/var/log/backuptools
+BACKUP_LOG=$BACKUP_LOG_DIR/www_maintener.log
+
+sudo -i -u oriweb /home/admin/backuptools/backup_www.sh &> $BACKUP_LOG_DIR/backup_www.log
+echo "Backup www : $?" &>> $BACKUP_LOG

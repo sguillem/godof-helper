@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/sbin/ntpdate ntp.ovh.net  > /var/log/ntp_cron.log

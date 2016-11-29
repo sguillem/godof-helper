@@ -1,0 +1,16 @@
+#!/bin/sh
+
+BACKUP_LOG_DIR=/var/log/backuptools
+BACKUP_LOG=$BACKUP_LOG_DIR/mariadb_maintener.log
+
+/etc/init.d/apache2 stop
+echo "Stop Apache : $?" &> $BACKUP_LOG
+MYSQL_PASSWORD=`cat ~/.my1.cnf  | grep password | awk -F= '{print $2}'`
+mysqlcheck --auto-repair --check --all-databases -p$MYSQL_PASSWORD &> $BACKUP_LOG_DIR/backup_repair.log
+echo "Repair : $?" &>> $BACKUP_LOG
+mysqlcheck --optimize --all-databases -p$MYSQL_PASSWORD &> $BACKUP_LOG_DIR/backup_optimize.log
+echo "Optimze : $?" &>> $BACKUP_LOG
+sudo -i -u mariadb /home/admin/backuptools/backup_mariadb.sh "-S /var/run/mysqld/mysqld1.sock"  &> $BACKUP_LOG_DIR/backup_mariadb.log
+echo "Backup : $?" &>> $BACKUP_LOG
+/etc/init.d/apache2 start
+echo "Start Apache : $?" &>> $BACKUP_LOG
